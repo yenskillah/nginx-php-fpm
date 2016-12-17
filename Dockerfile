@@ -122,7 +122,5 @@ ADD errors/ /data/errors/
 
 VOLUME /data
 
-EXPOSE 443
-
 #CMD ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
 CMD ["/start.sh"]
