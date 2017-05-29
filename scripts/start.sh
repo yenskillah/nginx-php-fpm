@@ -14,9 +14,9 @@ fi
 # Set custom webroot
 if [ ! -z "$WEBROOT" ]; then
   webroot=$WEBROOT
-  sed -i "s#root /var/www/html;#root ${webroot};#g" /etc/nginx/sites-available/default.conf
+  sed -i "s#root /data;#root ${webroot};#g" /etc/nginx/sites-available/default.conf
 else
-  webroot=/var/www/html
+  webroot=/data
 fi
 
 # Setup git variables
@@ -29,35 +29,35 @@ if [ ! -z "$GIT_NAME" ]; then
 fi
 
 # Dont pull code down if the .git folder exists
-if [ ! -d "/var/www/html/.git" ]; then
+if [ ! -d "/data/.git" ]; then
  # Pull down code from git for our site!
  if [ ! -z "$GIT_REPO" ]; then
    # Remove the test index file
-   rm -Rf /var/www/html/*
+   rm -Rf /data/*
    if [ ! -z "$GIT_BRANCH" ]; then
      if [ -z "$GIT_USERNAME" ] && [ -z "$GIT_PERSONAL_TOKEN" ]; then
-       git clone -b $GIT_BRANCH $GIT_REPO /var/www/html/
+       git clone -b $GIT_BRANCH $GIT_REPO /data/
      else
-       git clone -b ${GIT_BRANCH} https://${GIT_USERNAME}:${GIT_PERSONAL_TOKEN}@${GIT_REPO} /var/www/html
+       git clone -b ${GIT_BRANCH} https://${GIT_USERNAME}:${GIT_PERSONAL_TOKEN}@${GIT_REPO} /data
      fi
    else
      if [ -z "$GIT_USERNAME" ] && [ -z "$GIT_PERSONAL_TOKEN" ]; then
-       git clone $GIT_REPO /var/www/html/
+       git clone $GIT_REPO /data/
      else
-       git clone https://${GIT_USERNAME}:${GIT_PERSONAL_TOKEN}@${GIT_REPO} /var/www/html
+       git clone https://${GIT_USERNAME}:${GIT_PERSONAL_TOKEN}@${GIT_REPO} /data
      fi
    fi
-   chown -Rf nginx.nginx /var/www/html
+   chown -Rf nginx.nginx /data
  fi
 fi
 
 # Enable custom nginx config files if they exist
-if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
-  cp /var/www/html/conf/nginx/nginx-site.conf /etc/nginx/sites-available/default.conf
+if [ -f /data/conf/nginx/nginx-site.conf ]; then
+  cp /data/conf/nginx/nginx-site.conf /etc/nginx/sites-available/default.conf
 fi
 
-if [ -f /var/www/html/conf/nginx/nginx-site-ssl.conf ]; then
-  cp /var/www/html/conf/nginx/nginx-site-ssl.conf /etc/nginx/sites-available/default-ssl.conf
+if [ -f /data/conf/nginx/nginx-site-ssl.conf ]; then
+  cp /data/conf/nginx/nginx-site-ssl.conf /etc/nginx/sites-available/default-ssl.conf
 fi
 
 # Display PHP error's or not
@@ -90,15 +90,15 @@ if [ ! -z "$PHP_UPLOAD_MAX_FILESIZE" ]; then
 fi
 
 # Always chown webroot for better mounting
-chown -Rf nginx.nginx /var/www/html
+chown -Rf nginx.nginx /data
 
 # Run custom scripts
 if [[ "$RUN_SCRIPTS" == "1" ]] ; then
-  if [ -d "/var/www/html/scripts/" ]; then
+  if [ -d "/data/scripts/" ]; then
     # make scripts executable incase they aren't
-    chmod -Rf 750 /var/www/html/scripts/*
+    chmod -Rf 750 /data/scripts/*
     # run scripts in number order
-    for i in `ls /var/www/html/scripts/`; do /var/www/html/scripts/$i ; done
+    for i in `ls /data/scripts/`; do /data/scripts/$i ; done
   else
     echo "Can't find script directory"
   fi

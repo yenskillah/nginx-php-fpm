@@ -1,3 +1,4 @@
+
 FROM nginx:mainline-alpine
 
 MAINTAINER ngineered <support@ngineered.co.uk>
@@ -121,6 +122,8 @@ ADD src/ /data/
 ADD errors/ /data/errors/
 
 VOLUME /data
+
+EXPOSE 443 80
 
 #CMD ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
 CMD ["/start.sh"]
