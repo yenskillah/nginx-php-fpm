@@ -16,7 +16,7 @@ RUN apk update && \
     wget \
     supervisor \
     curl \
-    git
+    git \
     php5-fpm \
     php5-pdo \
     php5-pdo_mysql \
