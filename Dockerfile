@@ -8,15 +8,16 @@ ENV composer_hash aa96f26c2b67226a324c27919f1eb05f21c248b987e6195cad9690d5c1ff71
 
 #RUN echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
 RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
-    echo /etc/apk/respositories && \
-    apk update && \
+    echo /etc/apk/respositories
+RUN apk update && \
     apk add --no-cache bash \
     openssh-client \
     wget \
     supervisor \
     curl \
-    git \
-    php5-fpm \
+    git
+    
+RUN php5-fpm \
     php5-pdo \
     php5-pdo_mysql \
     php5-mysql \
@@ -51,8 +52,9 @@ RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repo
     gcc \
     musl-dev \
     linux-headers \
-    libffi-dev &&\
-    mkdir -p /etc/nginx && \
+    libffi-dev
+
+RUN mkdir -p /etc/nginx && \
     mkdir -p /var/www/app && \
     mkdir -p /run/nginx && \
     mkdir -p /var/log/supervisor &&\
