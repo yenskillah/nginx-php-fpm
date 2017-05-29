@@ -40,6 +40,7 @@ RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repo
     php5-soap \
     php5-dom \
     php5-zip \
+    php5-redis \
     php5-redis@testing \
     python \
     python-dev \
